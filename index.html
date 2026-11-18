@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>那個村的頑皮力 繪本（EP1–EP3）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#fbf4e4; --ink:#3c2d23; --accent:#b4502f; --soft:#e9dcc0; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:#e7dcc4; color:var(--ink);
+    font-family:"Noto Serif TC", "PingFang TC", "Microsoft JhengHei", serif; }
+  .wrap { min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 14px 28px; }
+  .book { width:min(1000px,100%); background:var(--paper); border-radius:14px;
+    box-shadow:0 18px 40px rgba(60,45,35,.25), inset 0 0 0 10px #fffaf0, inset 0 0 0 12px var(--soft);
+    padding:26px 26px 22px; position:relative; }
+  .pic { width:100%; aspect-ratio:1440/705; border-radius:8px; overflow:hidden; background:#efe6d2;
+    box-shadow:0 2px 0 var(--soft); }
+  .pic img { width:100%; height:100%; object-fit:cover; display:block; }
+  .text { min-height:150px; padding:22px 10px 6px; font-size:clamp(18px,2.3vw,24px); line-height:1.9; letter-spacing:.04em; }
+  .text p { margin:0 0 .4em; }
+  .text .say { color:var(--accent); font-weight:700; }
+  .cover .text { text-align:center; }
+  .cover h1 { font-size:clamp(30px,5vw,52px); margin:.1em 0 .1em; font-weight:900; letter-spacing:.08em; }
+  .cover h2 { font-size:clamp(18px,2.6vw,26px); margin:0 0 .5em; color:var(--accent); font-weight:700; }
+  .cover small { font-size:15px; opacity:.7; }
+  .nav { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; }
+  button { font:inherit; font-size:18px; border:2px solid var(--ink); background:#fffaf0; color:var(--ink);
+    border-radius:999px; padding:8px 22px; cursor:pointer; }
+  button:hover:not(:disabled) { background:var(--ink); color:var(--paper); }
+  button:disabled { opacity:.3; cursor:default; }
+  .count { font-size:16px; opacity:.75; }
+  .dots { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:16px; max-width:1000px; }
+  .dots span { width:10px; height:10px; border-radius:50%; background:#cdbd9c; cursor:pointer; }
+  .dots span.on { background:var(--accent); }
+  .fade { animation:fade .35s ease; }
+  @keyframes fade { from { opacity:.2; transform:translateY(4px);} to { opacity:1; transform:none; } }
+  .tabs { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; justify-content:center; }
+  .tab { font-size:17px; padding:8px 18px; }
+  .tab.on { background:var(--ink); color:var(--paper); }
+  .note { margin-top:10px; font-size:13px; opacity:.6; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tabs"><button id="t-ep1" class="tab">EP1　會講狗語的陌生人</button><button id="t-ep2" class="tab">EP2　主日的木瓜戰爭</button><button id="t-ep3" class="tab">EP3　後山的怪光</button></div>
+  <div class="book" id="book">
+    <div class="pic"><img id="img" alt=""></div>
+    <div class="text" id="text"></div>
+    <div class="nav">
+      <button id="prev" aria-label="上一頁">← 上一頁</button>
+      <span class="count" id="count"></span>
+      <button id="next" aria-label="下一頁">下一頁 →</button>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="note">可用鍵盤左右鍵或點下方圓點翻頁。插圖為分鏡草圖，正式版將以 AI 水彩繪本風格重繪。</div>
+</div>
+<script>
+const EP1 = [
+  { img:'n01', cover:true, html:`<h1>那個村的頑皮力</h1><h2>EP1　會講狗語的陌生人</h2><small>本書村落與人物皆為虛構</small>` },
+  { img:'n02', html:`<p>在台灣東部的海邊，有一個小小的村落，叫做南溪。前面是藍藍的太平洋，後面靠著青青的山。</p><p>阿力是東排灣族的孩子，他叫祖父「vuvu」——排灣族語裡對祖父母的稱呼。</p><p>原住民、閩南人、客家人和外省人都住在這裡。vuvu 在曬小米，閩南雜貨店的老闆娘剛打開店門，客家阿婆在曬菜脯，外省伯伯在老榕樹下泡茶。阿力呢？他爬在樹上，正拿彈弓瞄準木瓜……</p><p>這裡好幾十年來，從來沒有來過一個陌生人。</p>` },
+  { img:'n03', html:`<p>有一天，海邊的路上，慢慢走來一個高高的人。</p><p>他有淺棕色的頭髮，背著一個好大的帆布包。村口的狗先發現他，汪汪狂吠；雞嚇得飛起來，鵝也張開翅膀「嘎嘎嘎」大叫，小孩們全躲到牆後面偷看。</p>` },
+  { img:'n04', html:`<p>沒多久，全村的人都跑來了，把他團團圍住。</p><p>大頭摸摸他手臂上的毛，咪咪踮起腳尖：<span class="say">「我要看！我要看他藍藍的眼睛！」</span>阿力偷偷把自己的腳放在他的大腳旁邊比一比——哇，好大！然後踩了他一腳，想看他會不會生氣。陌生人「哎喲」一聲，還是笑咪咪的。</p>` },
+  { img:'n05', html:`<p>大人們輪流上陣。vuvu 用排灣族語問他：<span class="say">「keman？」</span>（吃飯？）閩南雜貨店的老闆娘用台語又大聲又慢地說：<span class="say">「食飽未？」</span>（吃飽了沒？）客家阿婆用客家話問他：<span class="say">「食飽吂？」</span>（吃飽了沒？）還硬塞一片菜脯到他手裡。</p><p>外省伯伯拿出他全部的英文：<span class="say">「Hello！OK！Thank you！」</span>……然後就沒了。</p><p>陌生人聽得一頭霧水，只好一直微笑。</p>` },
+  { img:'n06', html:`<p>於是全村開始比手畫腳：有人比吃飯，有人比睡覺，有人比肚子痛。</p><p>大家越猜越離譜，最後一致認定：<span class="say">「他一定是想找廁所！」</span>幾個人拉著他就要往茅房走。</p><p>陌生人好幾次想開口，都被新的手勢打斷了。</p>` },
+  { img:'n07', html:`<p>這時候，阿力從大人的腳邊擠了出來，掛著兩條乾掉的鼻涕，仰起頭直接問：</p><p><span class="say">「你會講狗語嗎？」</span></p><p>（阿力從小就把「國語」唸成「狗語」。）</p>` },
+  { img:'n08', html:`<p>全村突然安靜下來。</p><p>陌生人蹲下來，笑著用帶點外國口音的國語說：<span class="say">「我會。不過狗語……我只會一點點：汪！」</span></p><p>小孩們笑得滾在地上。外省伯伯的茶杯「哐」一聲掉到地上：<span class="say">「那我們剛剛比了半天……是在幹嘛？」</span></p>` },
+  { img:'n09', html:`<p>陌生人指指天上，認真地說：<span class="say">「我是來——傳福音的！」</span></p><p>大人們你看我、我看你，一頭霧水：<span class="say">「傳……什麼音？」</span>外省伯伯每個字都聽懂了，合起來還是不懂。</p><p>陌生人只好換個說法：他也想幫大家看病、教小孩讀書。他從口袋掏出一袋牛奶糖分給小孩，阿力第一個拿——一拿就是兩顆。</p><p>接著，他請每個人教他一句自己的話。排灣族語、台語、客家話，他都唸得怪怪的。這次換全村笑他，他也跟著哈哈大笑。</p>` },
+  { img:'n10', html:`<p>他在村裡住了下來。過了幾個月，大家一起幫他蓋一座小小的教堂。</p><p>vuvu帶年輕人上山扛木頭，老闆娘送來釘子和便當，客家阿婆煮了一大鍋湯，外省伯伯用毛筆寫教堂的招牌。阿力負責「幫忙」——幫到油漆桶倒在伯伯的招牌上。</p>` },
+  { img:'n11', html:`<p>教堂蓋好的那一天，鐘聲第一次在南溪村落響起。</p><p>噹——噹——全村的人站在教堂前，不分你我。從這一天起，大家都叫他「牧師」。</p>` },
+  { img:'n12', html:`<p>牧師對小孩們宣布：<span class="say">「以後每個主日，主日學都有牛奶糖喔！」</span></p><p>小孩們歡呼起來。站在後面的vuvu摸摸下巴，若有所思地看著阿力……</p><p style="text-align:center;margin-top:1em;font-weight:700">（第一集完．下集待續）</p>` },
+];
+const EP2 = [
+  { img:'p01', cover:true, html:`<h1>那個村的頑皮力</h1><h2>EP2　主日的木瓜戰爭</h2><small>本書村落與人物皆為虛構</small>` },
+  { img:'p02', html:`<p>在台灣東部的海邊，有一個小小的村落，叫做南溪。</p><p>前面是藍藍的太平洋，後面靠著青青的山。原住民、閩南人、客家人和外省人都住在這裡，大家你幫我、我幫你，從來不分彼此。</p><p>那天清晨，後山頂好像有什麼東西閃了一下，可是誰也沒有注意到。</p>` },
+  { img:'p03', html:`<p>這個星期天，vuvu 一早就穿上他最體面的排灣族刺繡禮服，準備去教會做禮拜。</p><p>一抬頭，只見阿力正在屋頂上追著一隻雞跑，羽毛滿天飛。</p><p><span class="say">「阿力！去教會了！」</span>阿力假裝沒聽到，繼續追他的雞。</p>` },
+  { img:'p04', html:`<p>vuvu嘆了一口氣，心裡想：</p><p><span class="say">「要是把這個小子留在家裡，等我回來，房子可能就不見了……」</span></p>` },
+  { img:'p05', html:`<p>vuvu眼珠子一轉，慢慢地說：</p><p><span class="say">「聽說今天主日學的老師，要發牛奶糖喔。」</span></p><p>咻——！話還沒說完，阿力已經溜下屋頂，乖乖站在門口了。</p>` },
+  { img:'p06', html:`<p>到了主日學，老師果然打開一盒牛奶糖。</p><p>別的小朋友一人拿一顆，阿力的小手一抓——就是三顆！</p>` },
+  { img:'p07', html:`<p>老師指著黑板上的大樹說：<span class="say">「凡不結好果子的樹，就砍下來……」</span></p><p>阿力的眼睛突然一亮。還沒等老師說完下半句，他就從窗戶溜走了。</p><p>老師一轉身：<span class="say">「所以我們要……咦？阿力呢？」</span></p>` },
+  { img:'p08', html:`<p>阿力跑去找好朋友大頭和他的妹妹咪咪。</p><p><span class="say">「一人一顆，跟我來！」</span>兩顆牛奶糖，就這樣變成了軍餉。</p><p>至於第三顆嘛……早就在阿力的嘴巴裡了。</p>` },
+  { img:'p09', html:`<p>三個小勇士衝上山坡，來到vuvu最寶貝的木瓜園。</p><p>阿力舉起樹枝大喊：<span class="say">「這些樹都還沒結好果子！老師說要砍下來！我們來幫vuvu！」</span></p>` },
+  { img:'p10', html:`<p>「喝！」「哈！」</p><p>樹枝揮呀揮，還沒長大的青木瓜，一顆、兩顆、三顆……咚、咚、咚地掉了滿地。</p>` },
+  { img:'p11', html:`<p>這個時候，教會裡的牧師正在講道：<span class="say">「我們要饒恕人，七十個七次……」</span></p><p>vuvu一邊聽，一邊點頭。</p><p>山上，木瓜掉一顆；教會裡，vuvu就點一下頭。</p>` },
+  { img:'p13', html:`<p>做完禮拜，vuvu照例上山看看他的木瓜。</p><p>他走著走著，突然停住了。</p><p>滿地都是青木瓜。三個小孩拿著樹枝，呆呆地站在中間。vuvu手上的聖經，「啪」一聲掉到了草地上。</p>` },
+  { img:'p14', html:`<p>阿力挺起胸膛，得意地說：</p><p><span class="say">「vuvu！我照老師說的，把不結果子的樹都處理好了！」</span></p>` },
+  { img:'p15', html:`<p>vuvu一句話也沒說。</p><p>他慢慢走到柴堆旁，抽出一根長長的乾柴。</p><p><span class="say">「阿——力——！」</span></p>` },
+  { img:'p16', html:`<p>阿力拔腿就跑！</p><p>他跳過客家阿婆曬的菜脯，菜脯飛得到處都是。阿婆氣得用客家話大喊。</p>` },
+  { img:'p17', html:`<p>他鑽過外省伯伯的象棋桌，棋子嘩啦啦飛上天。</p><p>伯伯一口茶還沒吞下去，「噗——」全噴了出來。</p>` },
+  { img:'p18', html:`<p>他衝進雜貨店，從前門進、後門出。</p><p>閩南雜貨店的老闆娘拿起掃把想攔住他：<span class="say">「別跑！」</span></p>` },
+  { img:'p19', html:`<p>結果，vuvu追阿力，阿婆追阿力，伯伯、老闆娘、大頭和咪咪也追阿力。</p><p>雞在跳，狗在叫，半個村落的人，全都在追同一個小孩。</p>` },
+  { img:'p20', html:`<p>阿力一路跑回教會，躲到牧師背後：<span class="say">「是主日學老師叫我砍的！」</span></p><p>牧師好尷尬。他輕輕按住vuvu舉起的乾柴：<span class="say">「七十個七次。」</span></p><p>vuvu抬頭望著天空：<span class="say">「主啊……今天一次就用掉一半了。」</span></p>` },
+  { img:'p21', html:`<p>滿地的青木瓜不能浪費。大家一人抱幾顆，回家煮成好吃的菜。</p><p>那天晚上，老榕樹下擺滿了四種青木瓜料理：vuvu 煮的排灣族青木瓜「懶人吉拿富」（青木瓜、小米、豬肉和假酸漿葉一起燉）、閩南人的青木瓜燉排骨、客家人沾著桔醬的醃青木瓜，還有外省伯伯拿手的川味涼拌青木瓜絲。</p><p>整個村落一起吃飯、一起笑。vuvu吃著吃著，終於也笑了。</p>` },
+  { img:'p22', html:`<p>下一個星期天，vuvu用一條繩子，把阿力綁在自己的腰上，一起走去教會。</p><p>阿力抬頭問：<span class="say">「vuvu，今天有發糖嗎？」</span></p><p>就在這時候，後山頂閃過一道奇怪的藍光，遠遠地傳來「嗶」的一聲。</p><p style="text-align:center;margin-top:1em;font-weight:700">（第二集完．下集待續）</p>` },
+];
+
+const EP3 = [
+  { img:'e01', cover:true, html:`<h1>那個村的頑皮力</h1><h2>EP3　後山的怪光</h2><small>本書村落與人物皆為虛構</small>` },
+  { img:'e02', html:`<p>深夜的南溪村落好安靜，只聽得到vuvu的打呼聲。</p><p>阿力躡手躡腳爬上小板凳，想偷吃藏在屋樑上的牛奶糖。</p><p>突然，窗外的後山頂「轟」一聲，亮起一道藍藍的光！全村的狗一起汪汪大叫，接著，又什麼聲音都沒有了。</p><p>vuvu翻個身，繼續打呼。</p>` },
+  { img:'e03', html:`<p>第二天一早，老榕樹下吵成一團。</p><p>雜貨店老闆娘說：<span class="say">「明明就是打雷！」</span>客家阿婆說：<span class="say">「那是鬼火啦！」</span>外省伯伯說：<span class="say">「不對，是敵人的飛機！」</span>牧師趕快說：<span class="say">「大家不要亂說。」</span></p><p>vuvu只說了一句：<span class="say">「誰都不准上後山。」</span>說的時候，眼睛一直盯著阿力。</p>` },
+  { img:'e04', html:`<p>vuvu不放心，上山去看他的木瓜園。這一看，他愣住了。</p><p>上次被打光的木瓜樹，一個晚上就結滿了黃澄澄的大木瓜！</p><p>vuvu抱著木瓜大喊<span class="say">「神蹟！」</span>還跳了一小段舞。躲在樹後的阿力，卻看到旁邊草地上有一圈燒焦的痕跡。</p>` },
+  { img:'e05', html:`<p>阿力當然不聽話。</p><p>那天半夜，他拿著手電筒，帶著大頭偷偷溜上後山。咪咪呢？當然又偷偷跟來了。</p>` },
+  { img:'e06', html:`<p>在燒焦的圓圈中間，有一團東西在發抖。</p><p>是一隻小狗！牠全身都是泥巴，身上有一條一條亮亮的金屬縫，眼睛一閃一閃，發著淡淡的藍光。</p><p>大頭嚇得躲到妹妹背後。</p>` },
+  { img:'e07', html:`<p>阿力慢慢伸出手，摸了摸小狗的頭。</p><p>小狗睜開眼睛，開口說了第一句話：</p><p><span class="say">「阿力？」</span></p><p>「哇啊啊啊——！」三個小孩尖叫著抱成一團。</p><p>回家的路上，阿力喃喃自語：<span class="say">「這次……是真的會講狗語了。」</span></p>` },
+  { img:'e08', html:`<p>阿力把小狗偷偷抱回家，藏在床底下。</p><p>第一次抱牠的時候，阿力的頭「叩」一聲撞到牠的背，硬得像鐵一樣，痛得他眼淚直流。</p><p><span class="say">「那你就叫鐵蛋好了！」</span></p>` },
+  { img:'e09', html:`<p>鐵蛋是一隻很奇怪的狗。</p><p>牠不吃飯，也不喝水。只要趴在太陽底下，或是靠在vuvu的收音機旁邊，眼睛就會越來越亮。</p>` },
+  { img:'e10', html:`<p>半夜，鐵蛋把vuvu的打呼聲學得一模一樣：<span class="say">「呼——嚕——」</span></p><p>vuvu醒過來，迷迷糊糊地問：<span class="say">「誰在打呼？」</span>鐵蛋馬上閉嘴。vuvu想了想，只好當作是自己。</p>` },
+  { img:'e11', html:`<p>鐵蛋還知道阿力把糖藏在哪裡，也叫得出vuvu的名字。</p><p><span class="say">「你怎麼知道？」</span>阿力嚇一跳。鐵蛋只是歪著頭。</p><p>每次教堂的鐘聲一響，鐵蛋就豎起耳朵，眼睛裡閃過一串數字。</p>` },
+  { img:'e12', html:`<p>星期天，主日學老師要大家背上週的經文。</p><p>鐵蛋躲在窗外，小聲幫阿力提詞。阿力一口氣把整句經文背得一字不差，連老師上次沒說完的下半句都背出來了！</p><p>老師感動得差點哭出來，多發給他一顆牛奶糖。只有vuvu站在門口，眉頭越皺越緊。</p>` },
+  { img:'t13', html:`<p>夏天的午後，天氣晴朗，海面平靜得像一面鏡子。</p><p>鐵蛋卻一直盯著大海和天空，眼睛裡的數字跳個不停。燕子飛得好低，螞蟻排著隊搬家，收音機裡的氣象報告、海浪的高度、雲飄的速度……鐵蛋全部放在一起算。</p>` },
+  { img:'t14', html:`<p>那天晚上，鐵蛋在牆上投出一張颱風路徑圖。</p><p>收音機說颱風會轉向。可是鐵蛋算出來的紅線，卻直直地朝南溪村落衝過來，而且明天晚上就到，比廣播說的強很多很多。</p>` },
+  { img:'t15', html:`<p>阿力衝去告訴大人：<span class="say">「颱風要來了！很大很大！」</span></p><p>vuvu說：<span class="say">「又在亂講。」</span>老闆娘笑他又想騙糖吃，外省伯伯指著收音機：<span class="say">「廣播都說沒事了。」</span></p><p>阿力不能說出鐵蛋的秘密，急得快哭了。鐵蛋蹲在他腳邊，小聲說：<span class="say">「阿力，我們自己來。」</span></p>` },
+  { img:'t16', html:`<p>第二天傍晚，風開始變大，浪一波比一波高。</p><p>阿力爬上教堂的鐘樓，拚命拉鐘繩。平常他亂敲鐘一定被罵，可是這一次，他是故意的！</p><p>噹！噹！噹！噹！全村的人都跑了出來。</p>` },
+  { img:'t17', html:`<p>牧師看著阿力認真的眼睛，選擇相信他：<span class="say">「大家先到教堂避一避，沒事最好。」</span></p><p>鐵蛋偷偷投出小光點，阿力照著指揮：海邊低窪的人家先走，後山腳的人家不要留。vuvu帶年輕人綁緊屋頂，老闆娘搬來米和罐頭，外省伯伯背起走不動的客家阿婆。</p>` },
+  { img:'t18', html:`<p>半夜，颱風真的來了，比收音機說的強好幾倍。</p><p>海水淹進低窪的房子，後山的石頭滾下來，正好壓在剛剛沒人住的屋子上。教堂裡的蠟燭被風吹熄了，小孩們嚇得哭了起來。</p><p>黑暗中，鐵蛋悄悄把眼睛變成兩盞小燈，照亮了咪咪和大頭。大人們只以為，是阿力帶了手電筒。</p>` },
+  { img:'t19', html:`<p>鐵蛋的燈，亮了一整夜。</p><p>天快亮的時候，牠的眼睛越來越暗，越來越暗……最後，輕輕地倒在阿力腳邊。</p><p><span class="say">「鐵蛋？鐵蛋！」</span></p>` },
+  { img:'t20', html:`<p>早晨，太陽從海面升起來了。</p><p>阿力抱著鐵蛋衝到陽光下。過了好久好久，鐵蛋的眼睛慢慢亮了起來，伸出舌頭，舔了阿力一口。</p><p>阿力又哭又笑，鼻涕都流下來了。</p>` },
+  { img:'t21', html:`<p>大家走出教堂，看著被淹、被石頭壓壞的房子；再看看身邊的每一個人，一個也沒有少。</p><p>vuvu一把抱住阿力：<span class="say">「這次，vuvu相信你。」</span></p><p>他瞄了一眼鐵蛋發亮的眼睛，什麼也沒問，只眨了眨眼。vuvu，也守住了這個秘密。</p>` },
+  { img:'t22', html:`<p>接下來的日子，四族的人一起重建了南溪村落。</p><p>夜裡，鐵蛋坐在窗邊，看著後山。牠胸口那個小小的「力」字，微微地發著光。</p><p>在另一個世界的南溪，有人看著螢幕，終於鬆了一口氣……</p><p style="text-align:center;margin-top:1em;font-weight:700">（第三集完）</p>` },
+];
+
+const EPS = { ep1: EP1, ep2: EP2, ep3: EP3 };
+let P = EP1;
+const $ = id => document.getElementById(id);
+let i = 0;
+function show(k) {
+  i = Math.max(0, Math.min(P.length - 1, k));
+  const p = P[i];
+  $('img').src = 'img/' + p.img + '.jpg';
+  $('img').alt = '第 ' + (i + 1) + ' 頁插圖';
+  $('text').innerHTML = p.html;
+  $('book').className = 'book' + (p.cover ? ' cover' : '');
+  $('text').classList.remove('fade'); void $('text').offsetWidth; $('text').classList.add('fade');
+  $('count').textContent = (i + 1) + ' / ' + P.length;
+  $('prev').disabled = i === 0; $('next').disabled = i === P.length - 1;
+  [...$('dots').children].forEach((d, j) => d.classList.toggle('on', j === i));
+}
+function buildDots() {
+  $('dots').innerHTML = '';
+  P.forEach((_, j) => { const s = document.createElement('span'); s.title = '第 ' + (j + 1) + ' 頁'; s.onclick = () => show(j); $('dots').appendChild(s); });
+  P.forEach(p => { const im = new Image(); im.src = 'img/' + p.img + '.jpg'; });
+}
+function setEp(name) {
+  if (!EPS[name]) name = 'ep1';
+  P = EPS[name];
+  ['ep1','ep2','ep3'].forEach(n => $('t-' + n).classList.toggle('on', n === name));
+  buildDots(); show(0);
+  try { if (location.hash !== '#' + name) history.replaceState(null, '', '#' + name); } catch (e) {}
+}
+$('t-ep1').onclick = () => setEp('ep1');
+$('t-ep2').onclick = () => setEp('ep2');
+$('t-ep3').onclick = () => setEp('ep3');
+$('prev').onclick = () => show(i - 1);
+$('next').onclick = () => show(i + 1);
+document.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(i + 1); if (e.key === 'ArrowLeft') show(i - 1); });
+window.addEventListener('hashchange', () => setEp(location.hash.slice(1)));
+setEp(location.hash.slice(1));
+
+</script>
+</body>
+</html>
